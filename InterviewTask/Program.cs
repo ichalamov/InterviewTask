@@ -11,13 +11,29 @@ namespace InterviewTask
         {
             char sep = ',';
              
-            List <Employee> EmployeeList = new List<Employee>();
-            EmployeeList.Add(new Employee { ID = 1, Name = "Jenny", Age = 24 });
-            EmployeeList.Add(new Employee { ID = 2, Name = "Anna", Age = 33 });
-            EmployeeList.Add(new Employee { ID = 3, Name = "Josh", Age = 29 });
-            EmployeeList.Add(new Employee { ID = 4, Name = "George,Michael", Age = 41 });
+            List<String> EmployeeList = new List<String>();
+            EmployeeList.Add("1");
+            EmployeeList.Add("Jenny");
+            EmployeeList.Add("24");
+            EmployeeList.Add("2");
+            EmployeeList.Add("Anna");
+            EmployeeList.Add("33");
+            EmployeeList.Add("3");
+            EmployeeList.Add("Josh");
+            EmployeeList.Add("29");
+            EmployeeList.Add("4");
+            EmployeeList.Add("George,Michael");
+            EmployeeList.Add("41");
 
+            List<int> numbers = new List<int>();
+            numbers.Add(1);
+            numbers.Add(2);
+            numbers.Add(3); 
+            numbers.Add(4);
+            numbers.Add(5);
+            numbers.Add(6);
 
+            //Console.WriteLine(GenerateToCsv(numbers, sep));
             Console.WriteLine(GenerateToCsv(EmployeeList, sep));
             Console.ReadLine();
 
@@ -30,18 +46,25 @@ namespace InterviewTask
             // Make the header row 
             sb.AppendLine("ID" + separator + "Name" + separator + "Age");
 
-            foreach (Employee item in items)
-            {
-                if (item.Name.Contains(separator.ToString())) {
+            for (int i=0, j=1; i < items.Count; i++,j++)  
+            { 
+                StringBuilder builder = new StringBuilder(items[i].ToString());
+
+                if (items[i].ToString().Contains(separator.ToString()))
+                {
                     // enclosing character(double quotes) must be used when required, 
                     // such as when the delimiter appears in a field.   
 
-                    StringBuilder builder = new StringBuilder(item.Name);
-                    builder.Replace(item.Name, "\""+item.Name+"\"");
-
-                    item.Name = builder.ToString();
+                    builder.Replace(items[i].ToString(), "\"" + items[i].ToString() + "\"");
                 }
-                sb.AppendLine(item.getAsCSVRow(separator));
+                builder.Append(separator);
+                sb.Append(builder);
+                if (j % 3 == 0)
+                {
+                    sb.Append('\r');
+                    sb.Append('\n');
+                }
+ 
             }
             // Do not follow the last record in a file with a carriage return.
             string output = sb.ToString().TrimEnd('\r', '\n');
